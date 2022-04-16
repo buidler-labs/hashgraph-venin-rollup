@@ -1,0 +1,5 @@
+.env
+lib.esm/
+lib.cjs/
+node_modules/
+types/

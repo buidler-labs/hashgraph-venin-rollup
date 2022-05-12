@@ -7,7 +7,6 @@ import commonjs from "@rollup/plugin-commonjs";
 import json from "@rollup/plugin-json";
 import nodePolyfills from "rollup-plugin-node-polyfills";
 import resolve from "@rollup/plugin-node-resolve";
-import { terser } from "rollup-plugin-terser";
 
 import strato from "@buidlerlabs/rollup-plugin-hedera-strato";
 
@@ -31,7 +30,6 @@ export default async function getConfig() {
       {
         file: getPathOf("./lib.esm/strato-rollup-test-bundle.js"),
         format: "esm",
-        plugins: [terser()],
         sourcemap: true,
       },
     ],

@@ -6,8 +6,8 @@
   },
   "exports": {
     ".": {
-      "node": "./lib.cjs/plugin.js",
-      "default": "./lib.esm/plugin.js"
+      "require": "./lib.cjs/plugin.js",
+      "import": "./lib.esm/plugin.js"
     }
   },
   "files": [
@@ -15,13 +15,13 @@
     "lib.esm",
     "types"
   ],
-  "main": "./lib.cjs/plugin.js",
-  "module": "./lib.esm/plugin.js",
+  "main": "lib.cjs/plugin.js",
+  "module": "lib.esm/plugin.js",
   "name": "@buidlerlabs/rollup-plugin-hedera-strato",
   "scripts": {
-    "build:4-publish": "run-s build:cjs build:esm build:declarations",
+    "build:4-publish": "run-p build:cjs build:esm build:declarations",
     "build:bundle-test-rollup": "rollup -c ./test/rollup.config.js",
-    "build:cjs": "babel --env-name cjs lib --extensions .ts --out-dir lib.cjs --source-maps",
+    "build:cjs": "babel --env-name cjs lib --extensions .ts --out-dir lib.cjs",
     "build:esm": "babel --env-name esm lib --extensions .ts --out-dir lib.esm --source-maps",
     "build:declarations": "tsc",
     "clean": "run-s clean:bundle-test-rollup clean:cjs clean:esm clean:declarations",
@@ -31,7 +31,8 @@
     "clean:esm": "rm -fr lib.esm",
     "lint": "eslint . --ext ts",
     "publish:npm": "run-s clean build:4-publish && npm publish --access public",
-    "test": "run-s build:4-publish build:bundle-test-rollup test:in-browser",
+    "pretest": "run-s build:4-publish build:bundle-test-rollup",
+    "test": "run-s test:in-browser",
     "test:in-browser": "karma start ./test/karma.smoke.conf.js"
   },
   "keywords": [

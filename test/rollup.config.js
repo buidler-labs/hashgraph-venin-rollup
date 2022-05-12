@@ -18,54 +18,48 @@ process.env.HEDERAS_CONTRACTS_RELATIVE_PATH = "./test/contracts";
 
 const extensions = [".js", ".ts"];
 
-function getPathOf(file) {
-  return pathJoin(__dirname, file);
-}
-
-export default async function getConfig() {
-  return {
-    context: "window",
-    input: "./test/smoke.spec.js",
-    output: [
-      {
-        file: getPathOf("./lib.esm/strato-rollup-test-bundle.js"),
-        format: "esm",
-        sourcemap: true,
+export default {
+  context: "window",
+  input: "./test/smoke.spec.js",
+  output: [
+    {
+      file: "./lib.esm/strato-rollup-test-bundle.js",
+      format: "esm",
+      sourcemap: true,
+    },
+  ],
+  plugins: [
+    strato({
+      contracts: {
+        path: pathJoin(__dirname, "contracts"),
       },
-    ],
-    plugins: [
-      strato({
-        contracts: {
-          path: pathJoin(__dirname, "contracts"),
-        },
-        includeCompiler: true,
-        sourceMap: true,
-      }),
-      resolve({
-        extensions,
-        mainFields: ["browser", "module", "main"],
-        preferBuiltins: false,
-      }),
-      commonjs({
-        esmExternals: true,
-        requireReturnsDefault: "preferred",
-      }),
-      nodePolyfills({
-        sourceMap: true,
-      }),
-      babel({
-        babelHelpers: "runtime",
-        exclude: "./node_modules/**",
-        extensions,
-        include: ["lib/**/*.ts"],
-        plugins: [["@babel/plugin-transform-runtime", { regenerator: true }]],
-        presets: [
-          ["@babel/env", { targets: "> 0.25%, not dead" }],
-          ["@babel/typescript"],
-        ],
-      }),
-      json(),
-    ],
-    treeshake: true,
-  };
+      includeCompiler: true,
+      sourceMap: true,
+    }),
+    resolve({
+      extensions,
+      mainFields: ["browser", "module", "main"],
+      preferBuiltins: false,
+    }),
+    commonjs({
+      esmExternals: true,
+      requireReturnsDefault: "preferred",
+    }),
+    nodePolyfills({
+      sourceMap: true,
+    }),
+    babel({
+      babelHelpers: "runtime",
+      exclude: "./node_modules/**",
+      extensions,
+      include: ["lib/**/*.ts"],
+      plugins: [["@babel/plugin-transform-runtime", { regenerator: true }]],
+      presets: [
+        ["@babel/env", { targets: "> 0.25%, not dead" }],
+        ["@babel/typescript"],
+      ],
+    }),
+    json(),
+  ],
+  treeshake: true,
 }

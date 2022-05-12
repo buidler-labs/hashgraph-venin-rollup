@@ -43,14 +43,12 @@ export default function strato(options: StratoRollupOptions = {}) {
   const resolvableIds: {
     [k: string]: { external: boolean; id: string; excludeImporter?: RegExp };
   } = {
-    ContractRegistry: { external: false, id: CONTRACT_REGISTRY_ID },
-    ContractsInFileStorage: {
-      external: false,
-      id: CONTRACTS_IN_FILE_STORAGE_ID,
-    },
-    SolidityCompiler: { external: false, id: SOLIDITY_COMPILER_ID },
+    // Strato specific modules
+    "ContractRegistry.mjs": { external: false, id: CONTRACT_REGISTRY_ID },
+    "SolidityCompiler.mjs": { external: false, id: SOLIDITY_COMPILER_ID },
+    "StratoLogger.mjs": { external: false, id: getPoliePathOf("StratoLogger.js") },
 
-    StratoLogger: { external: false, id: getPoliePathOf("StratoLogger.js") },
+    // node_modules specific dependencies
     "bignumber.js": {
       // Strato is using both @ethersproject/bignumber and bignumber.js. They don't play well together
       // There is a tendency to mess up @ethersproject inner-dependencies
@@ -61,6 +59,12 @@ export default function strato(options: StratoRollupOptions = {}) {
     },
     "core/Hex": { external: false, id: getPoliePathOf("Hex.js") },
     dotenv: { external: false, id: getPoliePathOf("dotenv.js") },
+
+    // Inner/Synthetic specific dependencies
+    ContractsInFileStorage: {
+      external: false,
+      id: CONTRACTS_IN_FILE_STORAGE_ID,
+    }, 
   };
 
   return {

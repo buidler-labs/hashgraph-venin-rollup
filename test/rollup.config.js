@@ -23,7 +23,7 @@ export default {
   input: "./test/smoke.spec.js",
   output: [
     {
-      file: "./lib.esm/strato-rollup-test-bundle.js",
+      file: "./test/lib.esm/strato-rollup-test-bundle.js",
       format: "esm",
       sourcemap: true,
     },

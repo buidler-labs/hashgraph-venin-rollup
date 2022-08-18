@@ -47,6 +47,7 @@ export default function strato(options: StratoRollupOptions = {}) {
     "ContractRegistry.mjs": { external: false, id: CONTRACT_REGISTRY_ID },
     "SolidityCompiler.mjs": { external: false, id: SOLIDITY_COMPILER_ID },
     "StratoLogger.mjs": { external: false, id: getPoliePathOf("StratoLogger.js") },
+    "core/Hex.mjs": { external: false, id: getPoliePathOf("Hex.js") },
 
     // node_modules specific dependencies
     "bignumber.js": {
@@ -57,7 +58,6 @@ export default function strato(options: StratoRollupOptions = {}) {
       external: true,
       id: "https://unpkg.com/bignumber.js@9.0.2/bignumber.mjs",
     },
-    "core/Hex": { external: false, id: getPoliePathOf("Hex.js") },
     dotenv: { external: false, id: getPoliePathOf("dotenv.js") },
 
     // Inner/Synthetic specific dependencies

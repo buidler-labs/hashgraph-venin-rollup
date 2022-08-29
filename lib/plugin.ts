@@ -1,6 +1,7 @@
 import * as fs from "fs/promises";
 import * as legacyFs from "fs";
 import * as path from "path";
+import { fileURLToPath } from "url";
 
 // @ts-ignore: Must use self-referencing imports here otherwise we risk getting into strange cyclic-dependency issues
 import { Contract } from "@buidlerlabs/hedera-strato-js";
@@ -17,6 +18,8 @@ type StratoRollupOptions = {
   sourceMap?: boolean;
 };
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const CONTRACT_REGISTRY_ID = "\0hedera-strato:ContractRegistry";
 const CONTRACTS_IN_FILE_STORAGE_ID = "\0hedera-strato:ContractsInFileStorage";
 const SOLIDITY_COMPILER_ID = "\0hedera-strato:SolidityCompiler";
@@ -46,8 +49,11 @@ export default function strato(options: StratoRollupOptions = {}) {
     // Strato specific modules
     "ContractRegistry.mjs": { external: false, id: CONTRACT_REGISTRY_ID },
     "SolidityCompiler.mjs": { external: false, id: SOLIDITY_COMPILER_ID },
-    "StratoLogger.mjs": { external: false, id: getPoliePathOf("StratoLogger.js") },
-    "core/Hex.mjs": { external: false, id: getPoliePathOf("Hex.js") },
+    "StratoLogger.mjs": {
+      external: false,
+      id: getPoliePathOf("StratoLogger.mjs"),
+    },
+    "core/Hex.mjs": { external: false, id: getPoliePathOf("Hex.mjs") },
 
     // node_modules specific dependencies
     "bignumber.js": {
@@ -58,13 +64,13 @@ export default function strato(options: StratoRollupOptions = {}) {
       external: true,
       id: "https://unpkg.com/bignumber.js@9.0.2/bignumber.mjs",
     },
-    dotenv: { external: false, id: getPoliePathOf("dotenv.js") },
+    dotenv: { external: false, id: getPoliePathOf("dotenv.mjs") },
 
     // Inner/Synthetic specific dependencies
     ContractsInFileStorage: {
       external: false,
       id: CONTRACTS_IN_FILE_STORAGE_ID,
-    }, 
+    },
   };
 
   return {
@@ -85,7 +91,7 @@ export default function strato(options: StratoRollupOptions = {}) {
           : getStorageCodeFor(contractsPath, relativeSolFiles));
       } else if (SOLIDITY_COMPILER_ID === id) {
         const solCompilerEntryPoint = getPoliePathOf(
-          `compiler/${includeCompiler ? "worker" : "none"}/SolidityCompiler.js`
+          `compiler/${includeCompiler ? "worker" : "none"}/SolidityCompiler.mjs`
         );
 
         source = await getSolidityCompilerCode(
@@ -183,6 +189,8 @@ async function getAllVirtuallyLocalizedContracts(solPath: string) {
   }
 
   const contracts = await Contract.allFrom({
+    // TODO: This is part of issue #2
+    allOrNothing: false,
     ignoreWarnings: true,
     path: solPath,
   });

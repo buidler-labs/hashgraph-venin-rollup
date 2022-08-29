@@ -58,4 +58,18 @@ describe("BrowserSmoke", function () {
     expect(bigNumberResponse).toBeInstanceOf(BigNumber);
     expect(queryResponse).toBeInstanceOf(BigNumber);
   }, 60000);
+
+  it("the online compiler should allow for library-linking to work", async () => {
+    const { session } = await ApiSession.default();
+    const contract = await Contract.newFrom({
+      path: "library_linking.sol",
+      libraries: { Search: "0.0.48019412" },
+    });
+    const liveContract = await session.upload(contract, [0, 42, 69]);
+    const existingResult = await liveContract.search(42);
+    const nonExistingResult = await liveContract.search(70);
+
+    expect(existingResult.isEqualTo(1)).toBeTrue();
+    expect(nonExistingResult.isEqualTo(-1)).toBeTrue();
+  }, 60000);
 });

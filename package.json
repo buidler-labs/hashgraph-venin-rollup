@@ -20,7 +20,7 @@
     "build:bundle-test-rollup": "rollup -c ./test/rollup.config.mjs",
     "build:esm": "babel --env-name esm lib --extensions .ts --out-dir dist --source-maps --out-file-extension .mjs",
     "build:declarations": "tsc",
-    "clean": "run-p clean:bundle-test-rollup clean:cjs clean:esm clean:declarations",
+    "clean": "run-p clean:bundle-test-rollup clean:esm clean:declarations",
     "clean:bundle-test-rollup": "rm -fr test/lib.esm",
     "clean:declarations": "rm -fr types",
     "clean:esm": "rm -fr dist",

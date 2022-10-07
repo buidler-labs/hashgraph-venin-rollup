@@ -83,6 +83,6 @@
   "types": "./types/plugin.d.ts",
   "version": "0.8.0",
   "peerDependencies": {
-    "@buidlerlabs/hedera-strato-js": "^0.8.0"
+    "@buidlerlabs/hedera-strato-js": "~0.8.0"
   }
 }

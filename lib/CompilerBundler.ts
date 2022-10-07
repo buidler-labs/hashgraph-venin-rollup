@@ -1,5 +1,6 @@
 import { RollupBuild, rollup } from "rollup";
 import commonjs from "@rollup/plugin-commonjs";
+import json from "@rollup/plugin-json";
 import nodePolyfills from "rollup-plugin-node-polyfills";
 import resolve from "@rollup/plugin-node-resolve";
 import webWorkerLoader from "rollup-plugin-web-worker-loader";
@@ -17,19 +18,22 @@ export async function getSolidityCompilerCode(
       input: entryModule,
       plugins: [
         webWorkerLoader({ sourcemap }),
-        resolve({
-          extensions: [".js"],
-          mainFields: ["browser", "module", "main"],
-          preferBuiltins: false,
-        }),
         commonjs({
           esmExternals: true,
           requireReturnsDefault: "preferred",
         }),
+        resolve({
+          mainFields: ["browser", "module", "main"],
+          preferBuiltins: false,
+        }),
         nodePolyfills({
           sourceMap: sourcemap,
         }),
+        json(),
       ],
+      treeshake: {
+        preset: "smallest",
+      },
     });
     const { output } = await bundle.generate({
       format: "esm",

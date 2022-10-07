@@ -1,14 +1,16 @@
 // @ts-ignore: Provided by bundler
 // Note: keep this as a js extension. Babel doesn't map this to a js automatically.
-//       That's ok since it's not meant to be executed directy anyway.
-import CompilerWorker from "web-worker:./SolidityCompiler.worker.js";
+//       That's ok since it's not meant to be executed directly anyway.
+import CompilerWorker from "web-worker:./SolidityCompiler.worker.mjs";
 // @ts-ignore: Provided by bundler
 import ContractsInFileStorage from "ContractsInFileStorage";
+
+import { ContractCompileResult } from "@buidlerlabs/hedera-strato-js/bundler-utils";
 
 /* eslint-disable no-undef */
 export const VIRTUAL_SOURCE_CONTRACT_FILE_NAME = "__contract__.sol";
 
-let compilerWorker = null;
+let compilerWorker: CompilerWorker | null = null;
 let hasCompilerLoaded = false;
 
 function triggerCompile(code) {
@@ -71,7 +73,13 @@ export class SolidityCompiler {
     return new Promise((accept, reject) => {
       compilerWorker.onmessage = function ({ data }) {
         if (data.type === "compile_result") {
-          accept(data.payload);
+          const jCompileResult = JSON.parse(data.payload);
+          const compiledResults = ContractCompileResult.getResultsFor(
+            VIRTUAL_SOURCE_CONTRACT_FILE_NAME,
+            jCompileResult
+          );
+
+          accept(compiledResults);
         } else if (data.type === "loaded" || hasCompilerLoaded) {
           hasCompilerLoaded = true;
           triggerCompile(code);

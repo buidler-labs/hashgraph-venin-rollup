@@ -1,8 +1,9 @@
 /* eslint-env node */
 
-import { join as pathJoin } from "path";
+import { dirname, join as pathJoin } from "path";
+import { fileURLToPath } from "url";
 
-import babel from "@rollup/plugin-babel";
+import { babel } from "@rollup/plugin-babel";
 import commonjs from "@rollup/plugin-commonjs";
 import json from "@rollup/plugin-json";
 import nodePolyfills from "rollup-plugin-node-polyfills";
@@ -16,14 +17,16 @@ dotenv.config();
 // Make sure we use the contracts defined for this bundle
 process.env.HEDERAS_CONTRACTS_RELATIVE_PATH = "./test/contracts";
 
-const extensions = [".js", ".ts"];
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const extensions = [".mjs", ".ts"];
 
 export default {
   context: "window",
-  input: "./test/smoke.spec.js",
+  input: "./test/smoke.spec.mjs",
   output: [
     {
-      file: "./lib.esm/strato-rollup-test-bundle.js",
+      file: "./test/lib.esm/strato-rollup-test-bundle.js",
       format: "esm",
       sourcemap: true,
     },
@@ -36,14 +39,13 @@ export default {
       includeCompiler: true,
       sourceMap: true,
     }),
-    resolve({
-      extensions,
-      mainFields: ["browser", "module", "main"],
-      preferBuiltins: false,
-    }),
     commonjs({
       esmExternals: true,
-      requireReturnsDefault: "preferred",
+      requireReturnsDefault: "auto",
+    }),
+    resolve({
+      mainFields: ["browser", "module", "main"],
+      preferBuiltins: false,
     }),
     nodePolyfills({
       sourceMap: true,
@@ -62,4 +64,4 @@ export default {
     json(),
   ],
   treeshake: true,
-}
+};

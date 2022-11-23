@@ -5,7 +5,7 @@ import CompilerWorker from "web-worker:./SolidityCompiler.worker.mjs";
 // @ts-ignore: Provided by bundler
 import ContractsInFileStorage from "ContractsInFileStorage";
 
-import { ContractCompileResult } from "@buidlerlabs/hedera-strato-js/bundler-utils";
+import { ContractCompileResult } from "@buidlerlabs/hashgraph-venin-js/bundler-utils";
 
 /* eslint-disable no-undef */
 export const VIRTUAL_SOURCE_CONTRACT_FILE_NAME = "__contract__.sol";

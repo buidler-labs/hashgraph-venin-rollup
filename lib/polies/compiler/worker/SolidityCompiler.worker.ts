@@ -7,6 +7,7 @@ importScripts(
   "https://binaries.soliditylang.org/bin/soljson-v0.8.9+commit.e5eed63a.js"
 );
 
+// Note: self.Module gets set after importing the solidity binary compiler
 const compiler = solc((self as any).Module);
 
 self.addEventListener("message", ({ data }) => {

@@ -4,11 +4,11 @@ import * as path from "path";
 import { fileURLToPath } from "url";
 
 // @ts-ignore: Must use self-referencing imports here otherwise we risk getting into strange cyclic-dependency issues
-import { Contract } from "@buidlerlabs/hedera-strato-js";
+import { Contract } from "@buidlerlabs/hashgraph-venin-js";
 import { SimpleReplacer } from "./SimpleReplacer";
 import { getSolidityCompilerCode } from "./CompilerBundler";
 
-type StratoRollupOptions = {
+type VeninRollupOptions = {
   contracts?: {
     path?: string;
     recurse?: boolean;
@@ -20,11 +20,11 @@ type StratoRollupOptions = {
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const CONTRACT_REGISTRY_ID = "\0hedera-strato:ContractRegistry";
-const CONTRACTS_IN_FILE_STORAGE_ID = "\0hedera-strato:ContractsInFileStorage";
-const SOLIDITY_COMPILER_ID = "\0hedera-strato:SolidityCompiler";
+const CONTRACT_REGISTRY_ID = "\0hashgraph-venin:ContractRegistry";
+const CONTRACTS_IN_FILE_STORAGE_ID = "\0hashgraph-venin:ContractsInFileStorage";
+const SOLIDITY_COMPILER_ID = "\0hashgraph-venin:SolidityCompiler";
 
-export default function strato(options: StratoRollupOptions = {}) {
+export default function venin(options: VeninRollupOptions = {}) {
   const {
     contracts: {
       path: contractsPath = "contracts",
@@ -46,7 +46,7 @@ export default function strato(options: StratoRollupOptions = {}) {
   const resolvableIds: {
     [k: string]: { external: boolean; id: string; excludeImporter?: RegExp };
   } = {
-    // Strato specific modules
+    // Venin specific modules
     "ContractRegistry.mjs": { external: false, id: CONTRACT_REGISTRY_ID },
     "SolidityCompiler.mjs": { external: false, id: SOLIDITY_COMPILER_ID },
     "StratoLogger.mjs": {
@@ -57,7 +57,7 @@ export default function strato(options: StratoRollupOptions = {}) {
 
     // node_modules specific dependencies
     "bignumber.js": {
-      // Strato is using both @ethersproject/bignumber and bignumber.js. They don't play well together
+      // Venin is using both @ethersproject/bignumber and bignumber.js. They don't play well together
       // There is a tendency to mess up @ethersproject inner-dependencies
       // We try to leave it alone to bundle its own thing
       excludeImporter: /@ethersproject/g,
@@ -101,7 +101,7 @@ export default function strato(options: StratoRollupOptions = {}) {
       }
       return source;
     },
-    name: "hedera-strato",
+    name: "hashgraph-venin",
     renderChunk(code: string, chunk) {
       const id = chunk.fileName;
       return replacer.tryReplacing(code, id);
@@ -231,7 +231,7 @@ async function getSolFiles(
     filesInPath = await fs.readdir(finalPath, { withFileTypes: true });
   } catch (e) {
     console.warn(
-      `StratoRollup - Could not read contracts from '${finalPath}': ${e.message} Skipping ...`
+      `VeninRollup - Could not read contracts from '${finalPath}': ${e.message} Skipping ...`
     );
   }
 

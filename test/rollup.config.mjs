@@ -9,7 +9,7 @@ import json from "@rollup/plugin-json";
 import nodePolyfills from "rollup-plugin-node-polyfills";
 import resolve from "@rollup/plugin-node-resolve";
 
-import strato from "@buidlerlabs/rollup-plugin-hedera-strato";
+import venin from "@buidlerlabs/rollup-plugin-hashgraph-venin";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -26,13 +26,13 @@ export default {
   input: "./test/smoke.spec.mjs",
   output: [
     {
-      file: "./test/lib.esm/strato-rollup-test-bundle.js",
+      file: "./test/lib.esm/venin-rollup-test-bundle.js",
       format: "esm",
       sourcemap: true,
     },
   ],
   plugins: [
-    strato({
+    venin({
       contracts: {
         path: pathJoin(__dirname, "contracts"),
       },

@@ -17,7 +17,7 @@ export async function getSolidityCompilerCode(
       external: ["ContractsInFileStorage"],
       input: entryModule,
       plugins: [
-        webWorkerLoader({ sourcemap }),
+        webWorkerLoader({ preserveSource: sourcemap, sourcemap }),
         commonjs({
           esmExternals: true,
           requireReturnsDefault: "preferred",

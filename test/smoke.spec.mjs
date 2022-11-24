@@ -5,7 +5,7 @@ import {
   ApiSession,
   Contract,
   ContractRegistry,
-} from "@buidlerlabs/hedera-strato-js";
+} from "@buidlerlabs/hashgraph-venin-js";
 import BigNumber from "bignumber.js";
 
 describe("BrowserSmoke", function () {

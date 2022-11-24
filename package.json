@@ -1,6 +1,6 @@
 {
   "author": "Buidler Labs Developers <devs@buidlerlabs.com>",
-  "description": "The Rollup plugin aiding to bundle the Hedera Strato Js library",
+  "description": "The Rollup plugin aiding to bundle the Hashgraph Venin Js library",
   "engines": {
     "node": ">=14.8"
   },
@@ -14,7 +14,7 @@
     "types"
   ],
   "module": "dist/plugin.mjs",
-  "name": "@buidlerlabs/rollup-plugin-hedera-strato",
+  "name": "@buidlerlabs/rollup-plugin-hashgraph-venin",
   "scripts": {
     "build:4-publish": "run-p build:esm build:declarations",
     "build:bundle-test-rollup": "rollup -c ./test/rollup.config.mjs",
@@ -31,7 +31,7 @@
     "test:in-browser": "karma start ./test/karma.smoke.conf.cjs"
   },
   "keywords": [
-    "StratoJs",
+    "VeninJs",
     "rollup-plugin",
     "Hedera",
     "Hashgraph",
@@ -77,12 +77,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/buidler-labs/hedera-strato-rollup"
+    "url": "https://github.com/buidler-labs/hashgraph-venin-rollup"
   },
   "type": "module",
   "types": "./types/plugin.d.ts",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "peerDependencies": {
-    "@buidlerlabs/hedera-strato-js": "~0.8.0"
+    "@buidlerlabs/hashgraph-venin-js": "~0.8.1"
   }
 }

@@ -83,6 +83,6 @@
   "types": "./types/plugin.d.ts",
   "version": "0.8.2-beta.0",
   "peerDependencies": {
-    "@buidlerlabs/hashgraph-venin-js": "~0.8.1"
+    "@buidlerlabs/hashgraph-venin-js": "~0.8.2-beta.0"
   }
 }
